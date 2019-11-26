@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Pomodoro clock</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    </head>
+    <body>
+        <p id="todo">Work time</p>
+        <div id="time">00 : 00</div>
+        <button id="start">start</button>
+        <button id="pause">pause</button>        
+
+        <script>
+            $("#pause").hide();
+
+            var isWorktime = true;            
+            var secTotal = 25*60;
+            var timeInterval;
+
+            function countDown() {                
+                var min = Math.floor(secTotal / 60);
+                var sec = secTotal % 60;
+                document.getElementById("time").innerHTML = min + " : " + sec;
+                secTotal--;
+                
+                //數到0的時候
+                if (secTotal < 0) {
+                    document.getElementById("time").innerHTML = "計時結束！";
+                    pause();
+                    isWorktime = isWorktime ? false : true;
+                    //改變下一段計時的時間、顯示的字
+                    secTotal = isWorktime ? 25*60 : 5*60;                    
+                    var text = isWorktime ? "Work time" : "Break time";                            
+                    document.getElementById("todo").innerHTML = text;
+                }
+            }
+
+            function pause() {
+                clearInterval(timeInterval);
+                $("#start").show();
+                $("#pause").hide();
+            }
+            function ctn() {
+                timeInterval = setInterval(countDown, 1000);
+                $("#pause").show();
+                $("#start").hide();
+            }
+
+            $("#start").click(ctn);
+            $("#pause").click(pause);
+        </script>
+
+    </body>
+</html>
